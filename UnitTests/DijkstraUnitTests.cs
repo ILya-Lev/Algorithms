@@ -1,4 +1,5 @@
 ﻿using Algorithms;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace UnitTests
 				new Edge<char,int> (vertices['A'], vertices['B'], 1),
 				new Edge<char,int> (vertices['A'], vertices['C'], 2),
 				new Edge<char,int> (vertices['A'], vertices['D'], 5),
-				new Edge<char,int> (vertices['B'], vertices['C'], 1),
+				new Edge<char,int> (vertices['B'], vertices['C'], 4),
 				new Edge<char,int> (vertices['B'], vertices['E'], 2),
 				new Edge<char,int> (vertices['B'], vertices['F'], 9),
 				new Edge<char,int> (vertices['C'], vertices['D'], 3),
@@ -47,65 +48,55 @@ namespace UnitTests
 			_graph.Vertices.AddRange(vertices.Values);
 		}
 
+		private string Processor(char startValue, char endValue)
+		{
+			var start = _graph.Vertices.FirstOrDefault(v => v.Value == startValue);
+			var end = _graph.Vertices.FirstOrDefault(v => v.Value == endValue);
+
+			var path = DijkstraSearch.FindPath(_graph, start, end);
+
+			return string.Join("->", path.Select(v => v.Value));
+		}
+
 		[TestMethod]
 		public void Path_A_B()
 		{
-			var start = _graph.Vertices.FirstOrDefault(v => v.Value == 'A');
-			var end = _graph.Vertices.FirstOrDefault(v => v.Value == 'B');
-			var path = DijkstraSearch.FindPath(_graph, start, end);
+			var output = Processor('A', 'B');
 
-			foreach (var vertex in path)
-			{
-				Console.Write(vertex.Value + "->");
-			}
+			Console.WriteLine(output);
+			output.Should().Be("A->B");
 		}
 		[TestMethod]
 		public void Path_A_C()
 		{
-			var start = _graph.Vertices.FirstOrDefault(v => v.Value == 'A');
-			var end = _graph.Vertices.FirstOrDefault(v => v.Value == 'C');
-			var path = DijkstraSearch.FindPath(_graph, start, end);
+			var output = Processor('A', 'C');
 
-			foreach (var vertex in path)
-			{
-				Console.Write(vertex.Value + "->");
-			}
+			Console.WriteLine(output);
+			output.Should().Be("A->C");
 		}
 		[TestMethod]
 		public void Path_A_D()
 		{
-			var start = _graph.Vertices.FirstOrDefault(v => v.Value == 'A');
-			var end = _graph.Vertices.FirstOrDefault(v => v.Value == 'D');
-			var path = DijkstraSearch.FindPath(_graph, start, end);
+			var output = Processor('A', 'D');
 
-			foreach (var vertex in path)
-			{
-				Console.Write(vertex.Value + "->");
-			}
+			Console.WriteLine(output);
+			output.Should().Be("A->C->D");
 		}
 		[TestMethod]
 		public void Path_A_E()
 		{
-			var start = _graph.Vertices.FirstOrDefault(v => v.Value == 'A');
-			var end = _graph.Vertices.FirstOrDefault(v => v.Value == 'E');
-			var path = DijkstraSearch.FindPath(_graph, start, end);
+			var output = Processor('A', 'E');
 
-			foreach (var vertex in path)
-			{
-				Console.Write(vertex.Value + "->");
-			}
+			Console.WriteLine(output);
+			output.Should().Be("A->B->E");
 		}
 		[TestMethod]
 		public void Path_A_F()
 		{
-			var start = _graph.Vertices.FirstOrDefault(v => v.Value == 'A');
-			var end = _graph.Vertices.FirstOrDefault(v => v.Value == 'F');
-			var path = DijkstraSearch.FindPath(_graph, start, end);
+			var output = Processor('A', 'F');
 
-			foreach (var vertex in path)
-			{
-				Console.Write(vertex.Value + "->");
-			}
+			Console.WriteLine(output);
+			output.Should().Be("A->B->E->F");
 		}
 	}
 }
