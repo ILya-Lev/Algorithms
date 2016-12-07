@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BFS.cs" />
     <Compile Include="DijkstraSearch.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="MergeSort.cs" />
