@@ -60,9 +60,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DfsUnitTests.cs" />
     <Compile Include="BfsUnitTests.cs" />
     <Compile Include="DijkstraUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnorderedConnectivityUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Algorithms\Algorithms.csproj">

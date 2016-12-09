@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Algorithms
 {
@@ -7,6 +8,7 @@ namespace Algorithms
 		public List<Vertex<TData, TMetrix>> Vertices { get; } = new List<Vertex<TData, TMetrix>>();
 	}
 
+	[DebuggerDisplay("value = {Value}; edges amount = {Edges.Count}")]
 	public class Vertex<TData, TMetrix>
 	{
 		public TData Value { get; set; }

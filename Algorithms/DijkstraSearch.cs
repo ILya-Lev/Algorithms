@@ -17,16 +17,21 @@ namespace Algorithms
 			{
 				var shortestEdge = frontier.ShortestEdge();
 				frontier.AddVertex(shortestEdge.Ending, shortestEdge);
+
+				if (!frontier.HasEdges)
+					break;
 			}
 
+			//check whether finish node has been found
+			if (!frontier.Contains(finish)) return null;
+
 			var path = new List<Vertex<TData, TMetrix>>();
-			for (var current = finish; current != start;)
+			for (var current = finish; current != null;)
 			{
 				path.Add(current);
 				var shortestEdge = frontier.EdgeForVertex(current);
-				current = shortestEdge.Beginning;
+				current = shortestEdge?.Beginning;
 			}
-			path.Add(start);
 			path.Reverse();
 			return path;
 		}
@@ -38,6 +43,8 @@ namespace Algorithms
 
 			private List<Edge<TData, TMetrix>> Edges { get; }
 						= new List<Edge<TData, TMetrix>>();
+
+			public bool HasEdges => Edges.Count > 0;
 
 			public void AddVertex(Vertex<TData, TMetrix> vertex, Edge<TData, TMetrix> edge)
 			{

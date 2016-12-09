@@ -8,7 +8,7 @@ using System.Linq;
 namespace UnitTests
 {
 	[TestClass]
-	public class DijkstraUnitTests
+	public class DfsUnitTests
 	{
 		private Graph<char, int> _graph;
 
@@ -23,8 +23,7 @@ namespace UnitTests
 				['C'] = new Vertex<char, int> { Value = 'C' },
 				['D'] = new Vertex<char, int> { Value = 'D' },
 				['E'] = new Vertex<char, int> { Value = 'E' },
-				['F'] = new Vertex<char, int> { Value = 'F' },
-				['Q'] = new Vertex<char, int> { Value = 'Q' },
+				['F'] = new Vertex<char, int> { Value = 'F' }
 			};
 
 			var edges = new[]
@@ -49,63 +48,28 @@ namespace UnitTests
 			_graph.Vertices.AddRange(vertices.Values);
 		}
 
-		private string Processor(char startValue, char endValue)
-		{
-			var start = _graph.Vertices.FirstOrDefault(v => v.Value == startValue);
-			var end = _graph.Vertices.FirstOrDefault(v => v.Value == endValue);
-
-			var path = DijkstraSearch.FindPath(_graph, start, end);
-
-			return string.Join("->", path?.Select(v => v.Value) ?? "");
-		}
-
-		[TestMethod]
-		public void Path_A_B()
-		{
-			var output = Processor('A', 'B');
-
-			Console.WriteLine(output);
-			output.Should().Be("A->B");
-		}
-		[TestMethod]
-		public void Path_A_C()
-		{
-			var output = Processor('A', 'C');
-
-			Console.WriteLine(output);
-			output.Should().Be("A->C");
-		}
-		[TestMethod]
-		public void Path_A_D()
-		{
-			var output = Processor('A', 'D');
-
-			Console.WriteLine(output);
-			output.Should().Be("A->C->D");
-		}
-		[TestMethod]
-		public void Path_A_E()
-		{
-			var output = Processor('A', 'E');
-
-			Console.WriteLine(output);
-			output.Should().Be("A->B->E");
-		}
 		[TestMethod]
 		public void Path_A_F()
 		{
-			var output = Processor('A', 'F');
+			var start = _graph.Vertices.FirstOrDefault(v => v.Value == 'A');
+			var end = _graph.Vertices.FirstOrDefault(v => v.Value == 'F');
+
+			var path = new BFS<char, int>().FindPath(_graph, start, end);
+
+			var output = string.Join("->", path.Select(v => v.Value));
 
 			Console.WriteLine(output);
-			output.Should().Be("A->B->E->F");
+			output.Should().Be("A->B->F");
 		}
 		[TestMethod]
 		public void Path_A_Q()
 		{
-			var output = Processor('A', 'Q');
+			var start = _graph.Vertices.FirstOrDefault(v => v.Value == 'A');
+			var end = _graph.Vertices.FirstOrDefault(v => v.Value == 'Q');
 
-			Console.WriteLine(output);
-			output.Should().Be("");
+			var path = new BFS<char, int>().FindPath(_graph, start, end);
+
+			path.Should().BeNull();
 		}
 	}
 }

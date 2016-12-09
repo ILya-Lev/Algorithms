@@ -1,14 +1,13 @@
 ﻿using Algorithms;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace UnitTests
 {
 	[TestClass]
-	public class BfsUnitTests
+	public class UnorderedConnectivityUnitTests
 	{
 		private Graph<char, int> _graph;
 
@@ -23,7 +22,9 @@ namespace UnitTests
 				['C'] = new Vertex<char, int> { Value = 'C' },
 				['D'] = new Vertex<char, int> { Value = 'D' },
 				['E'] = new Vertex<char, int> { Value = 'E' },
-				['F'] = new Vertex<char, int> { Value = 'F' }
+				['F'] = new Vertex<char, int> { Value = 'F' },
+				['G'] = new Vertex<char, int> { Value = 'G' },
+				['H'] = new Vertex<char, int> { Value = 'H' }
 			};
 
 			var edges = new[]
@@ -32,11 +33,8 @@ namespace UnitTests
 				new Edge<char,int> (vertices['A'], vertices['C'], 2),
 				new Edge<char,int> (vertices['A'], vertices['D'], 5),
 				new Edge<char,int> (vertices['B'], vertices['C'], 4),
-				new Edge<char,int> (vertices['B'], vertices['E'], 2),
-				new Edge<char,int> (vertices['B'], vertices['F'], 9),
-				new Edge<char,int> (vertices['C'], vertices['D'], 3),
-				new Edge<char,int> (vertices['C'], vertices['E'], 7),
 				new Edge<char,int> (vertices['E'], vertices['F'], 6),
+				new Edge<char,int> (vertices['G'], vertices['H'], 7),
 			};
 
 			foreach (var vertexByValue in vertices)
@@ -49,27 +47,13 @@ namespace UnitTests
 		}
 
 		[TestMethod]
-		public void Path_A_F()
+		public void AmountBlobs_3()
 		{
-			var start = _graph.Vertices.FirstOrDefault(v => v.Value == 'A');
-			var end = _graph.Vertices.FirstOrDefault(v => v.Value == 'F');
+			var processor = new ConnectedComponentsBfs<char, int>();
 
-			var path = new BFS<char, int>().FindPath(_graph, start, end);
+			var blobs = processor.Blobs(_graph);
 
-			var output = string.Join("->", path.Select(v => v.Value));
-
-			Console.WriteLine(output);
-			output.Should().Be("A->B->F");
-		}
-		[TestMethod]
-		public void Path_A_Q()
-		{
-			var start = _graph.Vertices.FirstOrDefault(v => v.Value == 'A');
-			var end = _graph.Vertices.FirstOrDefault(v => v.Value == 'Q');
-
-			var path = new BFS<char, int>().FindPath(_graph, start, end);
-
-			path.Should().BeNull();
+			blobs.Count.Should().Be(3);
 		}
 	}
 }
