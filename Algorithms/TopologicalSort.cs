@@ -1,0 +1,51 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Algorithms
+{
+	public class TopologicalSort<TData, TMetrix>
+	{
+		private Dictionary<Vertex<TData, TMetrix>, int> _seenVertices;
+		private int _number;
+
+		public List<Vertex<TData, TMetrix>> OrderedVertices(Graph<TData, TMetrix> graph)
+		{
+			_seenVertices = new Dictionary<Vertex<TData, TMetrix>, int>();
+			_number = graph.Vertices.Count;
+
+			foreach (var vertex in graph.Vertices)
+			{
+				if (_seenVertices.ContainsKey(vertex)) continue;
+
+				TraverseFromSeed(vertex);
+			}
+
+			return _seenVertices.Select(pair => new { pair.Key, pair.Value })
+								.OrderBy(item => item.Value)
+								.Select(item => item.Key)
+								.ToList();
+		}
+
+		private void TraverseFromSeed(Vertex<TData, TMetrix> seed)
+		{
+			var path = new Stack<Vertex<TData, TMetrix>>();
+			path.Push(seed);
+
+			var preventInfinitLoop = _number;
+
+			while (path.Count > 0 && preventInfinitLoop >= 0)
+			{
+				var current = path.Pop();
+				var edges = current.Edges.Where(e => !_seenVertices.ContainsKey(e.Ending)).ToList();
+
+				if (edges.Count == 0)   //it's a sink vertex in frame of current context
+					_seenVertices.Add(current, _number--);
+				else
+				{
+					edges.ForEach(e => path.Push(e.Ending));
+					preventInfinitLoop--;
+				}
+			}
+		}
+	}
+}
