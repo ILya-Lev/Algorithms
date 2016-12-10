@@ -35,11 +35,14 @@ namespace Algorithms
 
 			while (path.Count > 0 && preventInfinitLoop >= 0)
 			{
-				var current = path.Pop();
+				var current = path.Peek();
 				var edges = current.Edges.Where(e => !_seenVertices.ContainsKey(e.Ending)).ToList();
 
-				if (edges.Count == 0)   //it's a sink vertex in frame of current context
+				if (edges.Count == 0) //it's a sink vertex in frame of current context
+				{
 					_seenVertices.Add(current, _number--);
+					path.Pop();
+				}
 				else
 				{
 					edges.ForEach(e => path.Push(e.Ending));
