@@ -67,6 +67,7 @@
     <Compile Include="DijkstraUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TopologicalSortUnitTests.cs" />
+    <Compile Include="StronglyConnectedComponentsUnitTests.cs" />
     <Compile Include="UnorderedConnectivityUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
