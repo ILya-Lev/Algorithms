@@ -75,12 +75,15 @@ namespace Algorithms
 				var current = path.Peek();
 				_reverseSeenVertices.Add(current);
 
-				var currentEdges = edges[current].Where(e => !_reverseSeenVertices.Contains(e.Ending))
-												 .ToList();
+				var currentEdges = !edges.ContainsKey(current)
+					? new List<Edge<d, m>>()
+					: edges[current].Where(e => !_reverseSeenVertices.Contains(e.Ending))
+									 .ToList();
 				if (currentEdges.Count == 0)
 				{
 					path.Pop();
-					_finishingTimes.Add(current, _finishingTime++);
+					if (!_finishingTimes.ContainsKey(current))
+						_finishingTimes.Add(current, _finishingTime++);
 					continue;
 				}
 				currentEdges.ForEach(e => path.Push(e.Ending));
@@ -108,7 +111,8 @@ namespace Algorithms
 				if (currentEdges.Count == 0)
 				{
 					path.Pop();
-					_vertexByLeader.Add(current, leader);
+					if (!_vertexByLeader.ContainsKey(current))
+						_vertexByLeader.Add(current, leader);
 					continue;
 				}
 				currentEdges.ForEach(e => path.Push(e.Ending));
