@@ -70,6 +70,7 @@
     <Compile Include="StronglyConnectedComponentsUnitTests.cs" />
     <Compile Include="SccAssignmentUnitTests.cs" />
     <Compile Include="QuickSortUnitTests.cs" />
+    <Compile Include="SchedulingWeightedUnitTests.cs" />
     <Compile Include="UnorderedConnectivityUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
