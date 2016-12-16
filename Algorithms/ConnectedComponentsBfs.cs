@@ -3,15 +3,15 @@ using System.Linq;
 
 namespace Algorithms
 {
-	public class ConnectedComponentsBfs<TData, TMetrix>
+	public class ConnectedComponentsBfs<TData, TMetric>
 	{
-		private HashSet<Vertex<TData, TMetrix>> _seenVertices;
+		private HashSet<Vertex<TData, TMetric>> _seenVertices;
 
-		public List<Graph<TData, TMetrix>> Blobs(Graph<TData, TMetrix> graph)
+		public List<Graph<TData, TMetric>> Blobs(Graph<TData, TMetric> graph)
 		{
-			_seenVertices = new HashSet<Vertex<TData, TMetrix>>();
+			_seenVertices = new HashSet<Vertex<TData, TMetric>>();
 
-			var blobs = new List<Graph<TData, TMetrix>>();
+			var blobs = new List<Graph<TData, TMetric>>();
 			foreach (var vertex in graph.Vertices)
 			{
 				if (_seenVertices.Contains(vertex)) continue;
@@ -24,10 +24,10 @@ namespace Algorithms
 			return blobs;
 		}
 
-		private Graph<TData, TMetrix> ComposeBlob(Vertex<TData, TMetrix> seedVertex)
+		private Graph<TData, TMetric> ComposeBlob(Vertex<TData, TMetric> seedVertex)
 		{
-			var blob = new Graph<TData, TMetrix>();
-			var layer = new Queue<Vertex<TData, TMetrix>>();
+			var blob = new Graph<TData, TMetric>();
+			var layer = new Queue<Vertex<TData, TMetric>>();
 			layer.Enqueue(seedVertex);
 
 			while (layer.Count > 0)

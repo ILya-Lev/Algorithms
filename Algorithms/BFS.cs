@@ -3,15 +3,15 @@ using System.Linq;
 
 namespace Algorithms
 {
-	public class BFS<TData, TMetrix>
+	public class BFS<TData, TMetric>
 	{
-		private Dictionary<Vertex<TData, TMetrix>, Edge<TData, TMetrix>> _seenVertices;
+		private Dictionary<Vertex<TData, TMetric>, Edge<TData, TMetric>> _seenVertices;
 
-		public List<Vertex<TData, TMetrix>> FindPath(Graph<TData, TMetrix> graph,
-													Vertex<TData, TMetrix> start,
-													Vertex<TData, TMetrix> finish)
+		public List<Vertex<TData, TMetric>> FindPath(Graph<TData, TMetric> graph,
+													Vertex<TData, TMetric> start,
+													Vertex<TData, TMetric> finish)
 		{
-			_seenVertices = new Dictionary<Vertex<TData, TMetrix>, Edge<TData, TMetrix>>
+			_seenVertices = new Dictionary<Vertex<TData, TMetric>, Edge<TData, TMetric>>
 			{
 				[start] = null
 			};
@@ -19,15 +19,15 @@ namespace Algorithms
 			if (!FindVertex(start, finish))
 				return null;
 
-			var path = new List<Vertex<TData, TMetrix>> { finish };
+			var path = new List<Vertex<TData, TMetric>> { finish };
 			path.AddRange(TraversePath(start, finish));
 			path.Reverse();
 			return path;
 		}
 
-		private bool FindVertex(Vertex<TData, TMetrix> start, Vertex<TData, TMetrix> finish)
+		private bool FindVertex(Vertex<TData, TMetric> start, Vertex<TData, TMetric> finish)
 		{
-			var layer = new Queue<Vertex<TData, TMetrix>>();
+			var layer = new Queue<Vertex<TData, TMetric>>();
 			layer.Enqueue(start);
 			while (layer.Count > 0)
 			{
@@ -43,8 +43,8 @@ namespace Algorithms
 			return false;
 		}
 
-		private IEnumerable<Vertex<TData, TMetrix>> TraversePath(Vertex<TData, TMetrix> start,
-																 Vertex<TData, TMetrix> finish)
+		private IEnumerable<Vertex<TData, TMetric>> TraversePath(Vertex<TData, TMetric> start,
+																 Vertex<TData, TMetric> finish)
 		{
 			for (var current = finish; current != start;)
 			{

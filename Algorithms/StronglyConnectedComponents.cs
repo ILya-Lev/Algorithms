@@ -20,7 +20,7 @@ namespace Algorithms
 		{
 			//reverse initial graph
 			var edges = graph.Vertices.SelectMany(v => v.Edges)
-				.Select(e => new Edge<d, m>(e.Ending, e.Beginning, e.Metrix))
+				.Select(e => new Edge<d, m>(e.Ending, e.Beginning, e.Metric))
 				.GroupBy(e => e.Beginning)
 				.ToDictionary(g => g.Key, g => g);
 

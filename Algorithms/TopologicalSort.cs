@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace Algorithms
 {
-	public class TopologicalSort<TData, TMetrix>
+	public class TopologicalSort<TData, TMetric>
 	{
-		private Dictionary<Vertex<TData, TMetrix>, int> _seenVertices;
+		private Dictionary<Vertex<TData, TMetric>, int> _seenVertices;
 		private int _number;
 
-		public List<Vertex<TData, TMetrix>> OrderedVertices(Graph<TData, TMetrix> graph)
+		public List<Vertex<TData, TMetric>> OrderedVertices(Graph<TData, TMetric> graph)
 		{
-			_seenVertices = new Dictionary<Vertex<TData, TMetrix>, int>();
+			_seenVertices = new Dictionary<Vertex<TData, TMetric>, int>();
 			_number = graph.Vertices.Count;
 
 			foreach (var vertex in graph.Vertices)
@@ -26,9 +26,9 @@ namespace Algorithms
 								.ToList();
 		}
 
-		private void TraverseFromSeed(Vertex<TData, TMetrix> seed)
+		private void TraverseFromSeed(Vertex<TData, TMetric> seed)
 		{
-			var path = new Stack<Vertex<TData, TMetrix>>();
+			var path = new Stack<Vertex<TData, TMetric>>();
 			path.Push(seed);
 
 			var preventInfinitLoop = _number;

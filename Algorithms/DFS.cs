@@ -3,20 +3,20 @@ using System.Linq;
 
 namespace Algorithms
 {
-	public class DFS<TData, TMetrix>
+	public class DFS<TData, TMetric>
 	{
-		private Dictionary<Vertex<TData, TMetrix>, Edge<TData, TMetrix>> _seenVertices;
+		private Dictionary<Vertex<TData, TMetric>, Edge<TData, TMetric>> _seenVertices;
 
-		public List<Vertex<TData, TMetrix>> FindPath(Graph<TData, TMetrix> graph,
-													Vertex<TData, TMetrix> start,
-													Vertex<TData, TMetrix> finish)
+		public List<Vertex<TData, TMetric>> FindPath(Graph<TData, TMetric> graph,
+													Vertex<TData, TMetric> start,
+													Vertex<TData, TMetric> finish)
 		{
-			_seenVertices = new Dictionary<Vertex<TData, TMetrix>, Edge<TData, TMetrix>>();
+			_seenVertices = new Dictionary<Vertex<TData, TMetric>, Edge<TData, TMetric>>();
 
 			if (!FindNode(start, finish))
 				return null;
 
-			var path = new List<Vertex<TData, TMetrix>>();
+			var path = new List<Vertex<TData, TMetric>>();
 			for (var current = finish; current != start; current = _seenVertices[current].Beginning)
 			{
 				path.Add(current);
@@ -26,9 +26,9 @@ namespace Algorithms
 			return path;
 		}
 
-		private bool FindNode(Vertex<TData, TMetrix> start, Vertex<TData, TMetrix> finish)
+		private bool FindNode(Vertex<TData, TMetric> start, Vertex<TData, TMetric> finish)
 		{
-			var descent = new Stack<Vertex<TData, TMetrix>>();
+			var descent = new Stack<Vertex<TData, TMetric>>();
 			descent.Push(start);
 			_seenVertices.Add(start, null);
 

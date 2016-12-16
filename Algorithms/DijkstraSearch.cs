@@ -5,12 +5,12 @@ namespace Algorithms
 {
 	public static class DijkstraSearch
 	{
-		public static List<Vertex<TData, TMetrix>> FindPath<TData, TMetrix>
-															(Graph<TData, TMetrix> graph,
-															Vertex<TData, TMetrix> start,
-															Vertex<TData, TMetrix> finish)
+		public static List<Vertex<TData, TMetric>> FindPath<TData, TMetric>
+															(Graph<TData, TMetric> graph,
+															Vertex<TData, TMetric> start,
+															Vertex<TData, TMetric> finish)
 		{
-			var frontier = new Frontier<TData, TMetrix>();
+			var frontier = new Frontier<TData, TMetric>();
 			frontier.AddVertex(start, null);
 
 			while (!frontier.Contains(finish))
@@ -25,7 +25,7 @@ namespace Algorithms
 			//check whether finish node has been found
 			if (!frontier.Contains(finish)) return null;
 
-			var path = new List<Vertex<TData, TMetrix>>();
+			var path = new List<Vertex<TData, TMetric>>();
 			for (var current = finish; current != null;)
 			{
 				path.Add(current);
@@ -36,17 +36,17 @@ namespace Algorithms
 			return path;
 		}
 
-		private class Frontier<TData, TMetrix>
+		private class Frontier<TData, TMetric>
 		{
-			private Dictionary<Vertex<TData, TMetrix>, Edge<TData, TMetrix>> Vertices { get; }
-						= new Dictionary<Vertex<TData, TMetrix>, Edge<TData, TMetrix>>();
+			private Dictionary<Vertex<TData, TMetric>, Edge<TData, TMetric>> Vertices { get; }
+						= new Dictionary<Vertex<TData, TMetric>, Edge<TData, TMetric>>();
 
-			private List<Edge<TData, TMetrix>> Edges { get; }
-						= new List<Edge<TData, TMetrix>>();
+			private List<Edge<TData, TMetric>> Edges { get; }
+						= new List<Edge<TData, TMetric>>();
 
 			public bool HasEdges => Edges.Count > 0;
 
-			public void AddVertex(Vertex<TData, TMetrix> vertex, Edge<TData, TMetrix> edge)
+			public void AddVertex(Vertex<TData, TMetric> vertex, Edge<TData, TMetric> edge)
 			{
 				Vertices.Add(vertex, edge);
 				Edges.AddRange(vertex.Edges);
@@ -54,17 +54,17 @@ namespace Algorithms
 				Edges.RemoveAll(e => Vertices.ContainsKey(e.Ending));
 			}
 
-			public bool Contains(Vertex<TData, TMetrix> vertex)
+			public bool Contains(Vertex<TData, TMetric> vertex)
 			{
 				return Vertices.ContainsKey(vertex);
 			}
 
-			public Edge<TData, TMetrix> ShortestEdge()
+			public Edge<TData, TMetric> ShortestEdge()
 			{
-				return Edges.MinBy(e => e.Metrix);
+				return Edges.MinBy(e => e.Metric);
 			}
 
-			public Edge<TData, TMetrix> EdgeForVertex(Vertex<TData, TMetrix> vertex)
+			public Edge<TData, TMetric> EdgeForVertex(Vertex<TData, TMetric> vertex)
 			{
 				return Vertices[vertex];
 			}
