@@ -6,13 +6,13 @@ namespace Algorithms
 {
 	public static class SchedulingWeighted
 	{
-		public static IList<Job> OrderJobs(IList<Job> source) =>
+		public static IList<Job> OrderJobs (IList<Job> source) =>
 			//sequence.OrderBy(job => job.Length)
 			//		.ThenByDescending(job => job.Weight)
-			source.OrderByDescending(job => job.Weight / job.Length)
+			source.OrderByDescending(job => (double) job.Weight / job.Length)
 					.ToList();
 
-		public static int ScoreViaBruteForce(IList<Job> source)
+		public static long ScoreViaBruteForce (IList<Job> source)
 		{
 			var permutations = GeneratePermutations(source).ToList();
 			var scoredPermutations = permutations.Select(p => new
@@ -26,10 +26,10 @@ namespace Algorithms
 			return scoredPermutations.First().Score;
 		}
 
-		private static int OverallCompletionScore(IList<Job> source)
+		public static long OverallCompletionScore (IList<Job> source)
 		{
-			var score = 0;
-			int completionTime = 0;
+			long score = 0;
+			long completionTime = 0;
 			foreach (var job in source)
 			{
 				completionTime += job.Length;
@@ -38,7 +38,7 @@ namespace Algorithms
 			return score;
 		}
 
-		public static IEnumerable<IList<T>> GeneratePermutations<T>(IList<T> source, int begin = 0)
+		public static IEnumerable<IList<T>> GeneratePermutations<T> (IList<T> source, int begin = 0)
 		{
 			if (begin >= source.Count)
 				yield return source;
@@ -57,7 +57,7 @@ namespace Algorithms
 			}
 		}
 
-		private static void Swap<T>(IList<T> previousStep, int begin, int pivot)
+		private static void Swap<T> (IList<T> previousStep, int begin, int pivot)
 		{
 			var tmp = previousStep[begin];
 			previousStep[begin] = previousStep[pivot];
