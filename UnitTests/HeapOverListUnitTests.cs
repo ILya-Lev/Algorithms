@@ -42,7 +42,8 @@ namespace UnitTests
 
 			data.ForEach(item => heap.Add(item));
 
-			heap._storage.Should().BeInAscendingOrder();
+			heap._storage.Where(item => item != null)
+				.Should().BeInAscendingOrder(item => item.Value);
 		}
 
 		private class TestDataType : IComparable<TestDataType>

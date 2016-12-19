@@ -20,24 +20,26 @@ namespace Algorithms
 
 		private void FindRightPlace(T item, int begin, int end)
 		{
-			if (begin > end)
+			var start = begin;
+			var finish = end;
+
+			while (start <= finish)
 			{
-				_storage.Insert(begin, item);
-				return;
+				var middle = (start + finish) / 2;
+				var comparison = item?.CompareTo(_storage[middle]) ?? -1;
+				if (comparison == 0)
+				{
+					_storage.Insert(middle, item);
+					return;
+				}
+
+				if (comparison < 0)
+					finish = middle - 1;
+				else if (comparison > 0)
+					start = middle + 1;
 			}
 
-			var middle = (end + begin) / 2;
-			var comparison = item?.CompareTo(_storage[middle]);
-			if (comparison == 0)
-			{
-				_storage.Insert(middle, item);
-				return;
-			}
-
-			if (comparison < 0)
-				FindRightPlace(item, begin, middle - 1);
-			else if (comparison > 0)
-				FindRightPlace(item, middle + 1, end);
+			_storage.Insert(start, item);
 		}
 
 		public T RemoveMin() => RemoveAt(0);
