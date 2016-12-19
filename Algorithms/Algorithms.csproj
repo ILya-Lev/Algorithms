@@ -53,6 +53,7 @@
     <Compile Include="DijkstraSearch.cs" />
     <Compile Include="DirectedGraph.cs" />
     <Compile Include="Graph.cs" />
+    <Compile Include="HeapOverList.cs" />
     <Compile Include="MergeSort.cs" />
     <Compile Include="PrimesMst.cs" />
     <Compile Include="Program.cs" />
