@@ -14,89 +14,68 @@ namespace Algorithms
 
 	public class SpaninTree<TData, TMetric>
 	{
-		public Node<TData, TMetric> Root { get; set; }
+		private readonly Dictionary<Vertex<TData, TMetric>, Vertex<TData, TMetric>> _leaderByVertex;
+		private readonly Dictionary<Vertex<TData, TMetric>, List<Vertex<TData, TMetric>>> _leaderPopulation;
+		private readonly HashSet<Edge<TData, TMetric>> _edges;
+
+		public SpaninTree(List<Vertex<TData, TMetric>> vertices)
+		{
+			_leaderByVertex = vertices.ToDictionary(v => v, v => v);
+			_leaderPopulation
+				= vertices.ToDictionary(v => v, v => new List<Vertex<TData, TMetric>> { v });
+
+			_edges = new HashSet<Edge<TData, TMetric>>();
+		}
 
 		public void AddEdge(Edge<TData, TMetric> edge)
 		{
-			if (Root == null)
-			{
-				Root = new Node<TData, TMetric> { Data = edge.Beginning.Value };
-				var child = new Node<TData, TMetric>
-				{
-					Data = edge.Ending.Value,
-					DistanceFromParent = edge.Metric,
-					Parent = Root
-				};
+			//omit (first leader == second leader) check due to cycle formation check
+			var firstLeader = _leaderByVertex[edge.Beginning];
+			var secondLeader = _leaderByVertex[edge.Ending];
 
-				Root.ChildNodes.Add(child);
-				return;
+			if (_leaderPopulation[firstLeader].Count >= _leaderPopulation[secondLeader].Count)
+			{
+				_leaderPopulation[secondLeader].ForEach(v => _leaderByVertex[v] = firstLeader);
+				_leaderPopulation[firstLeader].AddRange(_leaderPopulation[secondLeader]);
+				_leaderPopulation[secondLeader] = null;
+			}
+			else
+			{
+				_leaderPopulation[firstLeader].ForEach(v => _leaderByVertex[v] = secondLeader);
+				_leaderPopulation[secondLeader].AddRange(_leaderPopulation[firstLeader]);
+				_leaderPopulation[firstLeader] = null;
 			}
 
-			var parent = FindParent(edge.Beginning);
-			if (parent != null)
-			{
-				var child = new Node<TData, TMetric>
-				{
-					Data = edge.Beginning.Value,
-					DistanceFromParent = edge.Metric,
-					Parent = parent
-				};
-				parent.ChildNodes.Add(child);
-				return;
-			}
-
-			parent = FindParent(edge.Ending);
-			if (parent != null)
-			{
-				var child = new Node<TData, TMetric>
-				{
-					Data = edge.Ending.Value,
-					DistanceFromParent = edge.Metric,
-					Parent = parent
-				};
-				parent.ChildNodes.Add(child);
-				return;
-			}
-
-			throw new ArgumentOutOfRangeException($"Edge's endings are not in the tree!");
-		}
-
-		private Node<TData, TMetric> FindParent(Vertex<TData, TMetric> vertex)
-		{
-			if (Root == null) return null;
-
-			var layer = new Queue<Node<TData, TMetric>>();
-			layer.Enqueue(Root);
-			while (layer.Count > 0)
-			{
-				var current = layer.Dequeue();
-				if (current.Data.Equals(vertex.Value))
-					return current;
-				current.ChildNodes.ForEach(c => layer.Enqueue(c));
-			}
-			return null;
+			_edges.Add(edge);
 		}
 
 		public bool FormsCycle(Edge<TData, TMetric> edge)
 		{
-			return FindParent(edge.Beginning) != null && FindParent(edge.Ending) != null;
+			//due to the classes constructor - all vertices are always here
+			return _leaderByVertex[edge.Beginning] == _leaderByVertex[edge.Ending];
 		}
+
+		/// <summary>
+		/// as there is no constraint for type argument TMetric to support operator+
+		/// I have to stick with int or other hardcoded type
+		/// </summary>
+		/// <param name="metricConverter">e.g. m => m  for Edge&lt;TData, int&gt;</param>
+		/// <returns>total metric of spanning tree - sum of individual metric of each edge</returns>
+		public int TotalCost(Func<TMetric, int> metricConverter)
+			=> _edges.Sum(e => metricConverter(e.Metric));
 	}
 
-	public class KruskalsMst<TData, TMetric>
+	public static class KruskalsMst
 	{
 		/// <summary>
-		/// not correct implementation due to
-		/// my spanning tree is connected
-		/// but the algorithm could produce disconnected graphs while is applied
+		/// implementation via union-find data structure - spanning tree above
 		/// </summary>
-		/// <param name="graph"></param>
-		/// <returns></returns>
-		public SpaninTree<TData, TMetric> GenerateSpaninTree(Graph<TData, TMetric> graph)
+		public static SpaninTree<TData, TMetric> GenerateSpaninTree<TData, TMetric>(
+															Graph<TData, TMetric> graph)
 		{
 			var edges = graph.Vertices.SelectMany(v => v.Edges).OrderBy(e => e.Metric).ToList();
 
-			var tree = new SpaninTree<TData, TMetric>();
+			var tree = new SpaninTree<TData, TMetric>(graph.Vertices);
 
 			foreach (var edge in edges)
 			{

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace Algorithms
 {
@@ -13,6 +15,11 @@ namespace Algorithms
 			var sorted = MergeSort<int>.SortArray(unsorted);
 			Print(sorted);
 			Print(unsorted);
+
+			var str = @";lnasd!$#!#%$%^&)*&*(_*?></.,|\][}{(_+(=-+_)+_)(~!@!~@~!$~%$%#$^@^%?<>?MV<ZMCV<ALGA";
+
+			Console.WriteLine(str);
+			Console.WriteLine(GenerateValidFileName(str));
 		}
 
 		private static void Print<T>(T[] array)
@@ -26,5 +33,15 @@ namespace Algorithms
 			Console.WriteLine();
 			Debug.WriteLine("\n");
 		}
+
+		private static string GenerateValidFileName(string name)
+		{
+			var invalidChars = Path.GetInvalidFileNameChars().ToLookup(c => c);
+
+			var filterredName = $"{name}.pdf".ToCharArray()
+								.Where(c => !invalidChars.Contains(c)).ToArray();
+			return new string(filterredName);
+		}
+
 	}
 }
