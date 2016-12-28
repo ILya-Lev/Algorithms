@@ -3,6 +3,12 @@ using System.Linq;
 
 namespace Algorithms
 {
+	/// <summary>
+	/// implements algorithm of defining how many blobs are there in a graph
+	/// if graph is completely connected - there is only one blob
+	/// </summary>
+	/// <typeparam name="TData"></typeparam>
+	/// <typeparam name="TMetric"></typeparam>
 	public class ConnectedComponentsBfs<TData, TMetric>
 	{
 		private HashSet<Vertex<TData, TMetric>> _seenVertices;
