@@ -66,6 +66,7 @@
     <Compile Include="StronglyConnectedComponents.cs" />
     <Compile Include="TopologicalSort.cs" />
     <Compile Include="UnionFind.cs" />
+    <Compile Include="UnionFindPathCompression.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
