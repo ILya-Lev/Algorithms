@@ -56,6 +56,7 @@
     <Compile Include="Graph.cs" />
     <Compile Include="HeapOverList.cs" />
     <Compile Include="KruskalsMst.cs" />
+    <Compile Include="LinkedList.cs" />
     <Compile Include="MergeSort.cs" />
     <Compile Include="PrimesMst.cs" />
     <Compile Include="Program.cs" />
