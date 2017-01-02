@@ -13,7 +13,7 @@ namespace UnitTests
 			var list = new MyLinkedList<int>();
 			for (int i = 0; i < 10; i++)
 			{
-				list.AddItem(i);
+				list.Add(i);
 			}
 
 			var evenList = MyLinkedList<int>.ReverseEven(list);
@@ -30,7 +30,7 @@ namespace UnitTests
 			var list = new MyLinkedList<int>();
 			for (int i = 0; i < 10; i++)
 			{
-				list.AddItem(i);
+				list.Add(i);
 			}
 
 			var evenList = MyLinkedList<int>.ReverseEvenInPlace(list);

@@ -9,9 +9,11 @@ namespace Algorithms
 		public LinkedNode<T> Next { get; set; }
 	}
 
-	public class MyLinkedList<T> : IEnumerable<T>
+	public class MyLinkedList<T> : ICollection<T>, IEnumerable<T>
 	{
 		public LinkedNode<T> Root { get; set; }
+		public int Count { get; private set; }
+		public bool IsReadOnly { get; } = false;
 
 		public static MyLinkedList<T> ReverseEven(MyLinkedList<T> source)
 		{
@@ -67,11 +69,12 @@ namespace Algorithms
 			return GetEnumerator();
 		}
 
-		public void AddItem(T data)
+		public void Add(T item)
 		{
 			if (Root == null)
 			{
-				Root = new LinkedNode<T> { Data = data };
+				Root = new LinkedNode<T> { Data = item };
+				Count = 1;
 				return;
 			}
 
@@ -80,7 +83,52 @@ namespace Algorithms
 			{
 				current = current.Next;
 			}
-			current.Next = new LinkedNode<T> { Data = data };
+			current.Next = new LinkedNode<T> { Data = item };
+			Count++;
+		}
+
+		public void Clear()
+		{
+			Root = null; //utilize GC yohoo!
+			Count = 0;
+		}
+
+		public bool Contains(T item)
+		{
+			for (var current = Root; current != null; current = current.Next)
+			{
+				if (current.Data.Equals(item)) return true;
+			}
+			return false;
+		}
+
+		public void CopyTo(T[] array, int arrayIndex)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public bool Remove(T item)
+		{
+			var removed = false;
+			var predecessor = Root;
+			var current = Root;
+			while (current != null)
+			{
+				if (current.Data.Equals(item))
+				{
+					current = current.Next;
+					predecessor.Next = current;
+
+					removed = true;
+					Count--;
+
+					continue;
+				}
+				if (predecessor != current)
+					predecessor = predecessor.Next;
+				current = current.Next;
+			}
+			return removed;
 		}
 	}
 }
