@@ -65,6 +65,7 @@
     <Compile Include="DfsUnitTests.cs" />
     <Compile Include="BfsUnitTests.cs" />
     <Compile Include="DijkstraUnitTests.cs" />
+    <Compile Include="IteratorUnitTests.cs" />
     <Compile Include="KruskalsMstUnitTests.cs" />
     <Compile Include="MyLinkedListUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

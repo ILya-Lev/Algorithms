@@ -53,6 +53,7 @@
     <Compile Include="ConnectedComponentsBfs.cs" />
     <Compile Include="DijkstraSearch.cs" />
     <Compile Include="DirectedGraph.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="HeapOverList.cs" />
     <Compile Include="KruskalsMst.cs" />
